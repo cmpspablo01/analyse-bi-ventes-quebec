@@ -1,0 +1,5 @@
+*.pbix
+*.pbit
+~$*
+.DS_Store
+__pycache__/
