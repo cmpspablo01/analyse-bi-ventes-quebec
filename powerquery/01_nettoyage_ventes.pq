@@ -11,11 +11,16 @@
 //   5. Colonne calculée montant_ligne = quantite * prix
 // Les retours (quantite < 0) sont CONSERVÉS et signalés par la colonne
 // est_retour : un retour est une information d'affaires, pas une erreur.
+//
+// NOTE CHEMIN : Power BI exige un chemin ABSOLU pour File.Contents.
+// Adapte la valeur de CheminFichier ci-dessous selon ton poste
+// (ex. « C:\Projets\analyse-bi-ventes-quebec\data\raw\ventes.csv »).
 // =====================================================================
 
 let
+    CheminFichier = "data/raw/ventes.csv", // <- chemin absolu à adapter
     Source = Csv.Document(
-        File.Contents("data/raw/ventes.csv"),
+        File.Contents(CheminFichier),
         [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.None]
     ),
     Entetes = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),

@@ -17,7 +17,7 @@
 ## Dimensions
 
 - **dim_magasin** : 8 magasins, avec ville et région administrative
-- **dim_produit** : 12 produits, 5 catégories, prix et coût unitaires (le coût sert au calcul de marge)
+- **dim_produit** : 12 produits, 5 catégories, prix et coût unitaires (le coût sert au calcul de marge). Le CSV brut `produits.csv` porte `produit_id` (101 à 112) ; le `code_produit` de la dimension s'en déduit : `'P' + produit_id` (ex. 101 → `P101`), c'est par ce code que `fait_ventes` référence le produit, résolu vers `produit_id` au chargement
 - **dim_client** : 400 clients fictifs, segmentés Régulier / Fidèle / Occasionnel
 - **dim_date** : calendrier 2023-2025 généré en Power Query (M), clé `AAAAMMJJ`
 
