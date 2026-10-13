@@ -1,0 +1,66 @@
+// =====================================================================
+// mesures.dax — Mesures DAX du rapport Power BI
+// À créer dans Power BI Desktop (Modélisation > Nouvelle mesure).
+// Convention : les mesures vivent dans une table dédiée « _Mesures »,
+// jamais de colonnes calculées pour des agrégations (performance).
+// =====================================================================
+
+// ---- KPI de base -----------------------------------------------------
+
+Ventes totales =
+SUM ( fait_ventes[montant_ligne] )
+
+Ventes brutes (sans retours) =
+CALCULATE ( [Ventes totales], fait_ventes[quantite] > 0 )
+
+Montant des retours =
+CALCULATE ( ABS ( [Ventes totales] ), fait_ventes[quantite] < 0 )
+
+% retours =
+DIVIDE ( [Montant des retours], [Ventes brutes (sans retours)] )
+
+Nb transactions =
+DISTINCTCOUNT ( fait_ventes[vente_id] )
+
+Panier moyen =
+DIVIDE ( [Ventes totales], [Nb transactions] )
+
+Marge totale =
+SUMX (
+    fait_ventes,
+    fait_ventes[quantite]
+        * ( fait_ventes[prix_unitaire_facture] - RELATED ( dim_produit[cout_unitaire] ) )
+)
+
+% marge =
+DIVIDE ( [Marge totale], [Ventes totales] )
+
+// ---- Time intelligence (exige la table calendrier marquée comme
+// ---- table de dates, relation sur date_complete) ---------------------
+
+Ventes YTD =
+TOTALYTD ( [Ventes totales], dim_date[date_complete] )
+
+Ventes même période an passé =
+CALCULATE ( [Ventes totales], SAMEPERIODLASTYEAR ( dim_date[date_complete] ) )
+
+Croissance YoY % =
+DIVIDE ( [Ventes totales] - [Ventes même période an passé],
+         [Ventes même période an passé] )
+
+Ventes moyenne mobile 3 mois =
+AVERAGEX (
+    DATESINPERIOD ( dim_date[date_complete], LASTDATE ( dim_date[date_complete] ), -3, MONTH ),
+    [Ventes totales]
+)
+
+// ---- Classements ------------------------------------------------------
+
+Rang magasin (ventes) =
+RANKX ( ALL ( dim_magasin[nom_magasin] ), [Ventes totales],, DESC, DENSE )
+
+Part des ventes du magasin =
+DIVIDE (
+    [Ventes totales],
+    CALCULATE ( [Ventes totales], ALL ( dim_magasin ) )
+)
