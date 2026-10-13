@@ -1,0 +1,9 @@
+magasin_id,nom_magasin,ville,region
+1,Montréal — Centre-ville,Montréal,Métropole
+2,Laval,Laval,Métropole
+3,Longueuil,Longueuil,Montérégie
+4,Châteauguay,Châteauguay,Montérégie
+5,Québec — Sainte-Foy,Québec,Capitale-Nationale
+6,Sherbrooke,Sherbrooke,Estrie
+7,Trois-Rivières,Trois-Rivières,Mauricie
+8,Gatineau,Gatineau,Outaouais
